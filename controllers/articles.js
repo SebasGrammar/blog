@@ -9,12 +9,37 @@ router.get("/new", (req, res) => {
     res.render("articles/new", { article: new Article() })
 })
 
+// router.get("/panel", async (req, res) => {
+//     let articles = await Article.find()
+//     res.render("articles/show", { articles })
+// })
+
+router.get("/panel", async (req, res) => {
+    const articles = await Article.find().sort({ createdAt: "desc" })
+    // res.render("articles/index", { articles })
+
+    // res.render("index") -> articles is not defined!
+    res.render("articles/index", { articles })
+})
+
 router.get("/edit/:id", async (req, res) => {
     // const articleId = req.params.id
     // const article = Article.findById(articleId)
     const article = await Article.findById(req.params.id)
     res.render("articles/edit", { article })
 })
+
+// router.get("/:slug", async (req, res) => {
+//     // const articleId = req.params.id
+//     // const article = await Article.findById(articleId)
+
+//     const slug = req.params.slug
+//     const article = await Article.findOne({ slug })
+//     if (article == null) {
+//         res.redirect("/")
+//     }
+//     res.render("articles/show", { article })
+// })
 
 router.get("/:slug", async (req, res) => {
     // const articleId = req.params.id
@@ -25,7 +50,7 @@ router.get("/:slug", async (req, res) => {
     if (article == null) {
         res.redirect("/")
     }
-    res.render("articles/show", { article })
+    res.render("articles/test", { article })
 })
 
 // router.post("/", async (req, res) => {

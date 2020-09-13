@@ -15,27 +15,21 @@ mongoose.connect("mongodb://localhost/blog", {
     useCreateIndex: true
 })
 
+app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs")
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride("_method"))
 
-// app.use("/articles", articleRouter)
-
-// app.get("/articles", (req, res) => {
-//     res.send("LOLLS")
-// })
-
 app.get("/", async (req, res) => {
-    // const articles = [{
-    //     title: "Title",
-    //     createdAt: new Date(),
-    //     description: "Description"
-    // }]
     const articles = await Article.find().sort({ createdAt: "desc" })
-    res.render("articles/index", {articles})
+    // res.render("articles/index", { articles })
+
+    // res.render("index") -> articles is not defined!
+    res.render("index", { articles })
 })
 
 app.use("/articles", articleRouter)
 
-
-app.listen(3000)
+app.listen(app.get("port"), () => {
+    console.log(`Server running at http://localhost:${app.get("port")}`);
+});
